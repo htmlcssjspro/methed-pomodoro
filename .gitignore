@@ -6,3 +6,6 @@ node_modules
 .src/
 .task/
 .old/
+
+audio/*.mp3
+!audio/eralash.mp3
