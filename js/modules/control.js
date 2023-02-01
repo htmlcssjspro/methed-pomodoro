@@ -1,25 +1,22 @@
 import { state } from './state.js';
-import { timerStart } from './timerStart.js';
-import { timerStop } from './timerStop.js';
+import { showTime, timerStart, timerStop } from './timer.js';
 
 export const $startBtn = document.querySelector('.control__btn_start');
 export const $stopBtn = document.querySelector('.control__btn_stop');
+const $btnList = document.querySelectorAll('.navigation__btn');
+// const $navigation = document.querySelector('.navigation');
 
-const $minutes = document.querySelector('.time__minutes');
-const $seconds = document.querySelector('.time__seconds');
+export const changeActiveBtn = dataUse => {
+    $btnList.forEach(($btn, i, list) => {
+        if (list[i].dataset.use === dataUse) {
+            $btn?.classList.add('navigation__btn_active');
+        } else {
+            $btn?.classList.remove('navigation__btn_active');
+        }
+    });
 
-const leadingZero = num =>
-    num < 10 ? `0${num}` : num;
-
-const min = seconds =>
-    leadingZero(Math.floor(seconds / 60));
-
-const sec = seconds =>
-    leadingZero(seconds % 60);
-
-export const showTime = (seconds) => {
-    $minutes.textContent = min(seconds);
-    $seconds.textContent = sec(seconds);
+    // $navigation.querySelector('.navigation__btn_active')?.classList.remove('navigation__btn_active');
+    // $navigation.querySelector(`.navigation__btn[data-use=${dataUse}]`)?.classList.add('navigation__btn_active');
 };
 
 export const controlInit = () => {
@@ -35,7 +32,18 @@ export const controlInit = () => {
         }
     }, false);
 
-    $stopBtn.addEventListener('click', () => {
-        timerStop();
+    $stopBtn.addEventListener('click', timerStop, false);
+
+    $btnList.forEach($btn => {
+        $btn.addEventListener('click', event => {
+            const status = event.currentTarget?.dataset.use;
+            changeActiveBtn(status);
+            state.status = status;
+            if (status === 'relax') {
+                //
+            }
+            state.timeLeft = state[state.status] * 60;
+            showTime();
+        }, false);
     });
 };

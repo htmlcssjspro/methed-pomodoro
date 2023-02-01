@@ -1,11 +1,28 @@
-const WORK_TIME = 0.25 * 60;
+const WORK_TIME = .25; // 25
+const BREAK_TIME = .05; // 5
+const RELAX_TIME = .20; // 20
 
 export const state = {
-    timeLeft: WORK_TIME,
+    work:     WORK_TIME,
+    break:    BREAK_TIME,
+    relax:    RELAX_TIME,
+    timeLeft: WORK_TIME * 60,
+    status:   'work',
     isActive: false,
     timerId:  0,
+    count:    4,
+
+    activeTodo: {
+        id:       'default',
+        pomodoro: 0,
+        title:    'Помодоро',
+    },
 
     timerReset(){
-        this.timeLeft = WORK_TIME;
+        this.timeLeft = WORK_TIME * 60;
+    },
+
+    timerDecrease(){
+        this.timeLeft--;
     },
 };
