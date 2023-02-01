@@ -1,10 +1,11 @@
-import { state } from './state.js';
+import { pomodoro } from './pomodoro.js';
 import { showTime, timerStart, timerStop } from './timer.js';
 
 export const $startBtn = document.querySelector('.control__btn_start');
 export const $stopBtn = document.querySelector('.control__btn_stop');
 const $btnList = document.querySelectorAll('.navigation__btn');
 // const $navigation = document.querySelector('.navigation');
+
 
 export const changeActiveBtn = dataUse => {
     $btnList.forEach(($btn, i, list) => {
@@ -21,12 +22,12 @@ export const changeActiveBtn = dataUse => {
 
 export const controlInit = () => {
     $startBtn.addEventListener('click', () => {
-        if (state.isActive) {
-            clearTimeout(state.timerId);
-            state.isActive = false;
+        if (pomodoro.isActive) {
+            clearTimeout(pomodoro.timerId);
+            pomodoro.isActive = false;
             $startBtn.textContent = 'Продолжить';
         } else {
-            state.isActive = true;
+            pomodoro.isActive = true;
             $startBtn.textContent = 'Пауза';
             timerStart();
         }
@@ -38,11 +39,7 @@ export const controlInit = () => {
         $btn.addEventListener('click', event => {
             const status = event.currentTarget?.dataset.use;
             changeActiveBtn(status);
-            state.status = status;
-            if (status === 'relax') {
-                //
-            }
-            state.timeLeft = state[state.status] * 60;
+            pomodoro.setStatus(status);
             showTime();
         }, false);
     });

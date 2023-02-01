@@ -1,6 +1,7 @@
-import { state } from './state.js';
+import { pomodoro } from './pomodoro.js';
 import { $startBtn, changeActiveBtn } from './control.js';
 
+const $countNum = document.querySelector('.count_num');
 
 const $minutes = document.querySelector('.time__minutes');
 const $seconds = document.querySelector('.time__seconds');
@@ -12,7 +13,7 @@ const audio = {
 };
 
 const alarm = () => {
-    audio[state.status].play();
+    audio[pomodoro.status].play();
 };
 
 const leadingZero = num => num < 10 ? `0${num}` : num;
@@ -20,42 +21,29 @@ const min = seconds => leadingZero(Math.floor(seconds / 60));
 const sec = seconds => leadingZero(seconds % 60);
 
 export const showTime = () => {
-    const seconds = state.timeLeft;
+    const seconds = pomodoro.timeLeft;
     $minutes.textContent = min(seconds);
     $seconds.textContent = sec(seconds);
 };
 
 export const timerStop = () => {
-    clearTimeout(state.timerId);
-    state.isActive = false;
-    state.timerReset();
-    // state.timeLeft = state[state.status] * 60;
+    clearTimeout(pomodoro.timerId);
+    pomodoro.isActive = false;
+    pomodoro.timerReset();
     $startBtn.textContent = 'Старт';
     showTime();
 };
 
 export const timerStart = () => {
-    if (state.isActive && state.timeLeft > 0) {
-        state.timerDecrease();
+    if (pomodoro.isActive && pomodoro.timeLeft > 0) {
+        pomodoro.timerDecrease();
         showTime();
-        state.timerId = setTimeout(timerStart, 1000);
+        pomodoro.timerId = setTimeout(timerStart, 1000);
     } else {
-        // timerStop();
         alarm();
-
-        if (state.status === 'work') {
-            state.activeTodo.pomodoro++;
-            if (state.activeTodo.pomodoro % state.count) {
-                state.status = 'break';
-            } else {
-                state.status = 'relax';
-            }
-        } else {
-            state.status = 'work';
-        }
-
-        state.timeLeft = state[state.status] * 60;
-        changeActiveBtn(state.status);
+        pomodoro.changeStatus();
+        changeActiveBtn(pomodoro.status);
+        $countNum.textContent = pomodoro.activeTodo.pomodoro;
         timerStart();
     }
 };
