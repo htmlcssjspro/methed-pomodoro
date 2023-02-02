@@ -21,7 +21,7 @@ export const pomodoro = {
         title:    'Помодоро',
     },
 
-    init(options) {
+    init(options = {}) {
         this.work = options.work ?? WORK_TIME;
         this.break = options.break ?? BREAK_TIME;
         this.relax = options.relax ?? RELAX_TIME;
