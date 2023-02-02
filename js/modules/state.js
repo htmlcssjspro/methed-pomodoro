@@ -12,10 +12,10 @@ export const state = {
     timerId:  0,
     count:    4,
 
-    activeTodo: {
+    todoActive: {
         id:       'default',
         pomodoro: 0,
-        title:    'Помодоро',
+        title:    'Все задачи выполнены!',
     },
 
     timerReset(){

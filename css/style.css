@@ -270,11 +270,11 @@ iframe {
   align-items: center;
 }
 
-.count_num {
+.count__num {
   font-size: 52px;
   margin-bottom: 10px;
 }
 
-.count_text {
+.count__text {
   font-size: 18px;
 }

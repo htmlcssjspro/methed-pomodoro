@@ -1,5 +1,6 @@
 import { state } from './state.js';
 import { $startBtn, changeActiveBtn } from './control.js';
+import { $countNum } from './todo.js';
 
 
 const $minutes = document.querySelector('.time__minutes');
@@ -44,8 +45,9 @@ export const timerStart = () => {
         alarm();
 
         if (state.status === 'work') {
-            state.activeTodo.pomodoro++;
-            if (state.activeTodo.pomodoro % state.count) {
+            state.todoActive.pomodoro++;
+            $countNum.textContent = state.todoActive.pomodoro;
+            if (state.todoActive.pomodoro % state.count) {
                 state.status = 'break';
             } else {
                 state.status = 'relax';

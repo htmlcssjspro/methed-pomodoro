@@ -39,11 +39,12 @@ export const controlInit = () => {
             const status = event.currentTarget?.dataset.use;
             changeActiveBtn(status);
             state.status = status;
+            state.timeLeft = state[state.status] * 60;
+            showTime();
+
             if (status === 'relax') {
                 //
             }
-            state.timeLeft = state[state.status] * 60;
-            showTime();
         }, false);
     });
 };
