@@ -1,4 +1,6 @@
+import { changeActiveBtn } from './control.js';
 import { state } from './state.js';
+import { timerStop } from './timer.js';
 
 
 const $todoList = document.querySelector('.todo__list');
@@ -57,18 +59,13 @@ const createTodo = todo => {
 
     $todoBtn.addEventListener('click', () => {
         activateTodo(todo);
+        changeActiveBtn('work');
+        timerStop();
     }, false);
 
     $editBtn.addEventListener('click', () => {
         let title = prompt('Введите новое имя задачи', todo.title); // eslint-disable-line no-alert
         title = htmlEntities(title);
-
-        // const todo = {
-        //     title,
-        //     pomodoro: 0,
-        //     id:       Math.random().toString(16).substring(2, 8)
-        // };
-
 
         let todoList = getTodoList();
         todoList = todoList.map(item => {
