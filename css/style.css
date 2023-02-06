@@ -28,6 +28,9 @@ body {
   background-color: #FFF8EE;
   color: #F85959;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 img,
@@ -75,28 +78,34 @@ iframe {
   margin: 0 auto;
   padding: 0 10px;
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template:
+    'header header header'
+    'todo timer count'
+    'footer footer footer'
+    / 1fr 2fr 1fr;
   align-items: center;
 }
 
-.timer {
-  display: flex;
-  flex-direction: column;
-}
 
 .header {
+  grid-area: header;
+  margin-bottom: 50px;
+}
+
+.header__headline {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1em;
   margin: 0 auto;
-  /* max-width: max-content; */
   margin-bottom: 30px;
+  /* max-width: max-content; */
 }
 
 .header__title {
   color: #C44747;
 }
+
 
 .header__logo {
   display: block;
@@ -109,7 +118,7 @@ iframe {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  margin-bottom: 50px;
+
 }
 
 .navigation__btn {
@@ -117,8 +126,7 @@ iframe {
   height: 40px;
   font-size: 16px;
   text-align: center;
-  /* margin-right: 20px; */
-  border-radius: 25px;
+  border-radius: 20px;
 }
 
 .navigation__btn:hover {
@@ -136,57 +144,9 @@ iframe {
   background-color: #F85959;
 }
 
-.time {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 60px;
-  font-size: 120px;
-  font-variant-numeric: tabular-nums;
-  color: #F85959;
-}
-
-
-.time__minutes {
-  flex: 1;
-  text-align: right;
-}
-
-.time__seconds {
-  flex: 1;
-  text-align: left;
-}
-
-.title {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 20px;
-}
-
-.control {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-}
-
-.control__btn {
-  width: 185px;
-  height: 40px;
-  font-size: 24px;
-  line-height: 30px;
-  text-align: center;
-  color: #FFF8EE;
-  background-color: #F85959;
-  border-radius: 20px;
-}
-
-.control__btn:hover {
-  background-color: #f53f3f;
-}
-
-.control__btn:last-child {
-  margin-right: 0;
+.todo {
+  grid-area: todo;
+  align-self: start;
 }
 
 .todo__title {
@@ -199,6 +159,7 @@ iframe {
 
 .todo__item {
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .todo__item-wrapper {
@@ -207,14 +168,14 @@ iframe {
   align-items: center;
 }
 
-.todo__btn {
+.todo__activate {
   position: relative;
   text-align: left;
   display: flex;
   align-items: flex-end;
 }
 
-.todo__btn:after {
+.todo__activate:after {
   content: '';
   display: block;
   height: 1px;
@@ -222,7 +183,7 @@ iframe {
   border-bottom: 1px dotted #F85959;
 }
 
-.todo__btn:hover {
+.todo__activate:hover {
   color: #f53f3f;
 }
 
@@ -264,17 +225,99 @@ iframe {
   text-align: left;
 }
 
+.timer {
+  grid-area: timer;
+  display: flex;
+  flex-direction: column;
+}
+
+.time {
+  grid-area: time;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 120px;
+  font-variant-numeric: tabular-nums;
+  color: #F85959;
+}
+
+
+.time__minutes {
+  flex: 1;
+  text-align: right;
+}
+
+.time__seconds {
+  flex: 1;
+  text-align: left;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 20px;
+}
+
+.footer {
+  grid-area: footer;
+  margin-top: 50px;
+}
+
+.footer__title {
+  width: fit-content;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+/* .footer__headline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.control__btn {
+  width: 185px;
+  height: 40px;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+  color: #FFF8EE;
+  background-color: #F85959;
+  border-radius: 20px;
+}
+
+.control__btn:hover {
+  background-color: #f53f3f;
+}
+
+.control__btn:last-child {
+  margin-right: 0;
+}
+
+
 .count {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.count_num {
+.count__num {
   font-size: 52px;
   margin-bottom: 10px;
 }
 
-.count_text {
+.count__text {
   font-size: 18px;
+}
+
+.header__title::first-letter,
+.footer__title::first-letter {
+  text-transform: capitalize;
 }

@@ -1,4 +1,4 @@
-import { pomodoro } from './pomodoro.js';
+import { pomodoro } from './Pomodoro.js';
 import { showTime, timerStart, timerStop } from './timer.js';
 
 export const $startBtn = document.querySelector('.control__btn_start');
@@ -41,6 +41,10 @@ export const controlInit = () => {
             changeActiveBtn(status);
             pomodoro.setStatus(status);
             showTime();
+
+            if (status === 'relax') {
+                //
+            }
         }, false);
     });
 };

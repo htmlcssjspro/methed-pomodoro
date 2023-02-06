@@ -1,16 +1,12 @@
-import { pomodoro } from './modules/pomodoro.js';
-import { controlInit } from './modules/control.js';
-import { showTime } from './modules/timer.js';
+import Pomodoro from './modules/Pomodoro.js';
 
-const init = () => {
-    pomodoro.init({
-        work:  25,
-        break: 5,
-        relax: 20,
-        count: 4,
-    });
-    controlInit();
-    showTime();
-};
+// const pomodoroDefault = new Pomodoro();
 
-init();
+const pomodoro = new Pomodoro({
+    name:        'Cool Pomodoro',
+    storageName: 'pomodoro',
+    work:        .25,
+    break:       .05,
+    relax:       .20,
+    count:       4,
+});
