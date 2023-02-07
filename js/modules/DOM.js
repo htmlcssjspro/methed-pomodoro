@@ -3,6 +3,7 @@ export default class DOM {
 
     #$todoList;
     #$todoItemAdd;
+    #$todoAddBtn;
 
     #$headerTitle;
     #$footerTitle;
@@ -12,37 +13,13 @@ export default class DOM {
     #$count;
 
     #$navigation;
+
     #$start;
     #$stop;
-
-    #activateTodo;
-    #editTodo;
-    #deleteTodo;
-
-    // #work;
-    // #break;
-    // #relax;
-
-    // #navigationHandler;
 
     constructor(options) {
         this.#$container = document.querySelector('.container');
         this.#$todoItemAdd = this.#createTodoItemAdd();
-
-        // Render.#init(options);
-
-        this.#activateTodo = options.activateTodo ?? (() => {});
-        this.#editTodo = options.editTodo ?? (() => {});
-        this.#deleteTodo = options.deleteTodo ?? (() => {});
-
-        // this.#navigationHandler = options.navigationHandler ?? (() => {});
-
-        // this.#work = options.workHandler;
-        // this.#break = options.breakHandler;
-        // this.#relax = options.relaxHandler;
-
-        // this.#onStart = options.onStart;
-        // this.#onStop = options.onStop;
 
         this.#$container.append(
             this.#renderHeader(),
@@ -56,6 +33,16 @@ export default class DOM {
     get $navigation() {
         return this.#$navigation;
     }
+    get $todoAddBtn() {
+        return this.#$todoAddBtn;
+    }
+
+    #start(event) {
+        event.currentTarget.dispatchEvent(new Event('start', { bubbles: true }));
+    }
+    #stop(event) {
+        event.currentTarget.dispatchEvent(new Event('stop', { bubbles: true }));
+    }
 
     #work(event) {
         event.currentTarget.dispatchEvent(new Event('work', { bubbles: true }));
@@ -66,12 +53,35 @@ export default class DOM {
     #relax(event) {
         event.currentTarget.dispatchEvent(new Event('relax', { bubbles: true }));
     }
-    #start(event) {
-        event.currentTarget.dispatchEvent(new Event('start', { bubbles: true }));
+
+    #todoAdd() {
+        document.dispatchEvent(new Event('todoadd', { bubbles: true }));
     }
-    #stop(event) {
-        event.currentTarget.dispatchEvent(new Event('stop', { bubbles: true }));
+    #todoActivate(item) {
+        document.dispatchEvent(new CustomEvent(
+            'todoactivate',
+            {
+                bubbles: true,
+                detail:  item,
+            }));
     }
+    #todoEdit(item) {
+        document.dispatchEvent(new CustomEvent(
+            'todoedit',
+            {
+                bubbles: true,
+                detail:  item,
+            }));
+    }
+    #todoDelete(item) {
+        document.dispatchEvent(new CustomEvent(
+            'tododelete',
+            {
+                bubbles: true,
+                detail:  item,
+            }));
+    }
+
 
     #renderHeader() {
         const $header = this.#createElement('header', {
@@ -125,7 +135,6 @@ export default class DOM {
             parent:  this.#$navigation,
             cb:      $btn => $btn.dataset.status = 'relax',
             onclick: this.#relax,
-
         });
 
         return $header;
@@ -156,10 +165,13 @@ export default class DOM {
         const $todoItemAdd = this.#createElement('li', {
             className: 'todo__item'
         });
-        const $todoAddBtn = document.createElement('button');
-        $todoAddBtn.className = 'todo__add';
-        $todoAddBtn.textContent = 'Добавить новую задачу';
-        $todoItemAdd.append($todoAddBtn);
+        this.#$todoAddBtn = this.#createElement('button', {
+            className:   'todo__add',
+            textContent: 'Добавить новую задачу',
+        }, {
+            parent:  $todoItemAdd,
+            onclick: this.#todoAdd,
+        });
 
         return $todoItemAdd;
     }
@@ -177,19 +189,19 @@ export default class DOM {
             textContent: item.title,
             ariaLabel:   'Активировать',
         }, {
-            onclick: () => this.#activateTodo(item)
+            onclick: () => this.#todoActivate(item)
         });
         const $editBtn = this.#createElement('button', {
             className: 'todo__edit',
             ariaLabel: 'Редактировать',
         }, {
-            onclick: () => this.#editTodo(item)
+            onclick: () => this.#todoEdit(item)
         });
         const $delBtn = this.#createElement('button', {
             className: 'todo__del',
             ariaLabel: 'Удалить',
         }, {
-            onclick: () => this.#deleteTodo(item)
+            onclick: () => this.#todoDelete(item)
         });
 
         $wrapper.append($activateBtn, $editBtn, $delBtn);
@@ -225,7 +237,6 @@ export default class DOM {
 
         return $timer;
     }
-
     renderTimer(time){
         const { min, sec } = this.#formatTime(time);
         this.#$minutes.textContent = min;
@@ -303,6 +314,7 @@ export default class DOM {
         const { min, sec } = this.#formatTime(time);
         document.title = `${status} ${min}:${sec}`;
     }
+
 
     #leadingZero = num => num < 10 ? `0${num}` : num;
 

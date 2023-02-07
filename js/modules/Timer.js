@@ -5,9 +5,9 @@ export default class Timer {
     static #COUNT = 4;
 
     static #AUDIO = {
-        work:  new Audio('audio/eralash.mp3'),
-        break: new Audio('audio/eralash.mp3'),
-        relax: new Audio('audio/eralash.mp3'),
+        work:  new Audio('audio/work.mp3'),
+        break: new Audio('audio/break.mp3'),
+        relax: new Audio('audio/relax.mp3'),
     };
 
     #left;
@@ -67,10 +67,7 @@ export default class Timer {
         this.status = status;
         clearInterval(this.intervalId);
         this.#reset();
-        if (this.isActive) {
-            this.#alarm(status);
-            this.#start();
-        }
+        this.control.changeActiveBtn(this.status);
     }
 
     statusHandler({ type }) {
@@ -79,7 +76,7 @@ export default class Timer {
 
     changeStatus() {
         if (this.status === 'work') {
-            this.todo.active.pomodoro++;
+            this.todo.increasePomodoro();
             this.dom.renderCount(this.todo.active.pomodoro);
             if (this.todo.active.pomodoro % this.count) {
                 this.setStatus('break');
@@ -88,6 +85,9 @@ export default class Timer {
             }
         } else {
             this.setStatus('work');
+        }
+        if (this.isActive) {
+            this.#start();
         }
     }
 
@@ -102,9 +102,9 @@ export default class Timer {
 
             if (this.left > 0) return;
 
+            // this.#alarm(); // Сигнал статуса по окончании периода статуса
             this.changeStatus();
-            this.control.changeActiveBtn(this.status);
-            // document.dispatchEvent(new CustomEvent('timerstatusset', { detail: { status: this.status } }));
+            this.#alarm(); // Сигнал статуса в начале периода статуса
         }, 1000);
     }
 
@@ -115,10 +115,10 @@ export default class Timer {
     }
 
     start() {
-        if (this.isActive) {
+        if (this.isActive) { // pause
             this.#stop();
             this.dom.renderStart('Продолжить');
-        } else {
+        } else { // continue
             this.#start();
             this.dom.renderStart('Пауза');
         }

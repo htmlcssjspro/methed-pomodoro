@@ -8,4 +8,6 @@ node_modules
 .old/
 
 audio/*.mp3
-!audio/eralash.mp3
+!audio/work.mp3
+!audio/break.mp3
+!audio/relax.mp3

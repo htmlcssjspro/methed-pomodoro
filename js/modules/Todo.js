@@ -48,37 +48,57 @@ export default class Todo {
         localStorage.removeItem(this.name);
     }
 
-    get(id) {
+    #get(id) {
         return this.list.find(item => item.id === id);
     }
 
-    add(todo) {
+    #add(todo) {
         this.list.push(todo);
         this.#setList(this.list);
         return todo;
     }
 
-    update(todo) {
-        const target = this.get(todo.id);
+    #update(todo) {
+        const target = this.#get(todo.id);
         const updatedTodo = Object.assign(target, todo);
         this.#setList(this.list);
         return updatedTodo;
     }
 
-    delete(id) {
+    #delete(id) {
         this.list = this.list.filter(item => item.id !== id);
         this.#setList(this.list);
     }
 
     create() {
         const todo = {};
-        todo.id = Math.random().toString(16).substring(2, 12);
         const title = prompt('Введите имя задачи', 'Новая задача'); // eslint-disable-line no-alert
+        if (!title) return;
         todo.title = this.#htmlEntities(title);
+        todo.id = Math.random().toString(16).substring(2, 12);
         todo.pomodoro = 0;
         this.active = todo;
-        this.add(todo);
+        this.#add(todo);
         return todo;
+    }
+
+    edit(todo) {
+        let title = prompt('Введите новое имя задачи', todo.title); // eslint-disable-line no-alert
+        if (!title) return;
+        todo.title = this.#htmlEntities(title);
+        this.#update(todo);
+        return todo;
+    }
+
+    delete(todo){
+        this.#delete(todo.id);
+        this.active = this.list[0] ?? Todo.#TODO;
+    }
+
+    increasePomodoro(){
+        this.active.pomodoro++;
+        this.#update(this.active);
+        return this.active;
     }
 
     #htmlEntities = str => String(str)

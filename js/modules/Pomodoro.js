@@ -5,16 +5,12 @@ import Todo from './Todo.js';
 
 export default class Pomodoro {
     static #NAME = 'New Pomodoro';
+    static get NAME() {
+        return this.#NAME;
+    }
 
     constructor(options = {}){
-        this.name = options.name ?? Pomodoro.#NAME;
-
-        // this.state = {
-        //     status: 'work'
-        // };
-
-        // this.storage = new Storage(options.storageName);
-        // this.todoActive = this.storage.list[0] ?? Todo.default;
+        this.name = options.name ?? Pomodoro.NAME;
 
         this.todo = new Todo({
             storageName: options.storageName,
@@ -38,14 +34,12 @@ export default class Pomodoro {
 
         this.renderInit();
 
-        document.addEventListener('work', this.testEventsHandler.bind(this), false);
-        document.addEventListener('break', this.testEventsHandler.bind(this), false);
-        document.addEventListener('relax', this.testEventsHandler.bind(this), false);
+        document.addEventListener('todoadd', this.addTodo.bind(this), false);
+        document.addEventListener('todoactivate', this.activateTodo.bind(this), false);
+        document.addEventListener('todoedit', this.editTodo.bind(this), false);
+        document.addEventListener('tododelete', this.deleteTodo.bind(this), false);
     }
 
-    testEventsHandler(event) {
-        console.log('event: ', event);
-    }
 
     renderInit() {
         this.dom.renderHeaderTitle(this.name);
@@ -55,7 +49,40 @@ export default class Pomodoro {
         this.dom.renderFooterTitle(this.todo.active?.title);
     }
 
-    onTodoActivate() {}
-    onTodoEdit() {}
-    onTodoDelete() {}
+    addTodo() {
+        const todo = this.todo.create();
+        if (!todo) return;
+        this.timer.setStatus('work');
+        this.timer.stop();
+        this.dom.renderTodo(todo);
+        this.dom.renderTodoList(this.todo.list);
+    }
+
+    activateTodo({ detail }) {
+        const todo = detail;
+        this.todo.active = todo;
+        this.timer.setStatus('work');
+        this.timer.stop();
+        this.dom.renderTodo(todo);
+    }
+
+    editTodo({ detail }) {
+        let todo = detail;
+        todo = this.todo.edit(todo);
+        if (!todo) return;
+        this.todo.active = todo;
+        this.timer.setStatus('work');
+        this.timer.stop();
+        this.dom.renderTodo(todo);
+        this.dom.renderTodoList(this.todo.list);
+    }
+
+    deleteTodo({ detail }) {
+        const todo = detail;
+        this.todo.delete(todo);
+        this.timer.setStatus('work');
+        this.timer.stop();
+        this.dom.renderTodo(this.todo.active);
+        this.dom.renderTodoList(this.todo.list);
+    }
 }
