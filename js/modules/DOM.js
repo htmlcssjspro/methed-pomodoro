@@ -1,5 +1,5 @@
 export default class DOM {
-    #$container;
+    #$app;
 
     #$todoList;
     #$todoItemAdd;
@@ -18,10 +18,25 @@ export default class DOM {
     #$stop;
 
     constructor(options) {
-        this.#$container = document.querySelector('.container');
+        if (options?.app instanceof HTMLElement) {
+            this.#$app = options.app;
+        } else {
+            if (typeof options?.app === 'string') {
+                this.#$app = document.querySelector(options.app);
+            } else {
+                this.#$app = document.querySelector('.app');
+            }
+            if (this.#$app instanceof HTMLElement === false) {
+                this.#$app = this.#createElement('section', {
+                    className: 'app'
+                });
+                document.body.prepend(this.#$app);
+            }
+        }
+
         this.#$todoItemAdd = this.#createTodoItemAdd();
 
-        this.#$container.append(
+        this.#$app.append(
             this.#renderHeader(),
             this.#renderTodo(),
             this.#renderTimer(),
