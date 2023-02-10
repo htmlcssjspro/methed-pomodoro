@@ -1,0 +1,281 @@
+%display-block {
+    display: block;
+    box-sizing: border-box;
+}
+
+%margin0padding0 {
+    margin: 0;
+    padding: 0;
+}
+
+%border {
+    border: none;
+}
+
+%pointer {
+    cursor: pointer;
+}
+
+%transparent {
+    background-color: transparent;
+}
+
+html {
+    @extend %margin0padding0;
+    font-size: 62.5%;
+}
+
+body {
+    @extend %margin0padding0;
+    font-size: 1.6rem;
+}
+
+%h {
+    @extend %display-block;
+    @extend %margin0padding0;
+    font-weight: bolder;
+    // margin-block-start: 0.5em;
+    // margin-block-end: 0.5em;
+    // margin-inline-start: 1em;
+    // margin-inline-end: 1em;
+}
+
+h1 {
+    @extend %h;
+}
+h2 {
+    @extend %h;
+}
+h3 {
+    @extend %h;
+}
+h4 {
+    @extend %h;
+}
+h5 {
+    @extend %h;
+}
+h6 {
+    @extend %h;
+}
+
+header {
+    @extend %display-block;
+}
+
+footer {
+    @extend %display-block;
+}
+
+main {
+    @extend %display-block;
+}
+
+aside {
+    @extend %display-block;
+}
+
+nav {
+    @extend %display-block;
+}
+
+section {
+    @extend %display-block;
+}
+
+article {
+    @extend %display-block;
+}
+
+pre {
+    @extend %margin0padding0;
+}
+
+code {
+    @extend %margin0padding0;
+}
+
+div {
+    @extend %display-block;
+    @extend %margin0padding0;
+}
+
+a {
+    @extend %display-block;
+    @extend %pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+span {
+    @extend %display-block;
+}
+
+p {
+    @extend %display-block;
+    @extend %margin0padding0;
+}
+
+img {
+    @extend %display-block;
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: auto;
+    -o-object-position: center;
+    object-position: center;
+    -o-object-fit: cover;
+    object-fit: cover;
+    border-style: none;
+}
+
+svg {
+    @extend %display-block;
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+}
+
+%font {
+    color: inherit;
+    font: inherit;
+}
+
+%userselect {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+button,
+input[type='button'],
+input[type='reset'],
+input[type='submit'] {
+    @extend %display-block;
+    @extend %margin0padding0;
+    @extend %font;
+    @extend %border;
+    @extend %userselect;
+    @extend %pointer;
+    text-align: center;
+    @extend %transparent;
+
+    &:focus,
+    &.focus {
+        outline: none;
+    }
+
+    &:disabled,
+    &.disabled {
+        // opacity: 0.65;
+    }
+}
+
+form {
+    @extend %display-block;
+    @extend %margin0padding0;
+}
+
+fieldset {
+    @extend %display-block;
+    @extend %margin0padding0;
+    @extend %border;
+}
+
+label {
+    @extend %display-block;
+    @extend %margin0padding0;
+    @extend %userselect;
+}
+
+input[type='text'],
+input[type='number'],
+input[type='tel'],
+input[type='email'],
+input[type='password'],
+input[type='file'],
+legend {
+    @extend %display-block;
+    @extend %margin0padding0;
+    @extend %font;
+    width: 100%;
+    -webkit-padding-start: 0;
+    padding-inline-start: 0;
+    -webkit-padding-end: 0;
+    padding-inline-end: 0;
+    @extend %transparent;
+}
+
+input[type='date'],
+input[type='time'],
+input[type='datetime-local'] {
+    @extend %display-block;
+    @extend %margin0padding0;
+    @extend %font;
+    @extend %transparent;
+}
+
+input[type='checkbox'] {
+    @extend %margin0padding0;
+    @extend %font;
+    @extend %pointer;
+    width: 1em;
+    height: 1em;
+}
+input[type='radio'] {
+    @extend %pointer;
+}
+
+select,
+option {
+    @extend %display-block;
+    @extend %margin0padding0;
+    @extend %font;
+    @extend %userselect;
+}
+
+textarea {
+    @extend %display-block;
+    @extend %margin0padding0;
+    @extend %font;
+    resize: vertical;
+    width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+ul {
+    @extend %margin0padding0;
+    list-style: none;
+}
+
+ol {
+    @extend %margin0padding0;
+}
+
+li {
+    @extend %margin0padding0;
+}
+
+figure {
+    @extend %margin0padding0;
+}
+
+.dn {
+    display: none;
+}
+
+.hidden,
+[hidden] {
+    visibility: hidden;
+}
+
+.visually-hidden {
+    position: fixed;
+    transform: scale(0);
+}

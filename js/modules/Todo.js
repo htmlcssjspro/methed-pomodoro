@@ -8,9 +8,11 @@ export default class Todo {
 
     #active;
     #list;
+    #timer;
 
     constructor(options) {
         this.name = options.storageName ?? Todo.#STORAGE_NAME;
+        this.#timer = options.timer;
         this.list = this.#getList();
         this.active = this.list[0] ?? Todo.#TODO;
     }
@@ -20,17 +22,32 @@ export default class Todo {
     }
 
     get active(){
+        const pomodoro = this.#active.pomodoro;
+
+        let works = pomodoro;
+        works *= this.#timer.work;
+
+        let breaks = Math.floor(pomodoro - pomodoro / this.#timer.count);
+        breaks *= this.#timer.break;
+
+        let relaxes = Math.floor(pomodoro / this.#timer.count) - (!pomodoro || pomodoro % this.#timer.count ? 0 : 1);
+        relaxes *= this.#timer.relax;
+
+        this.#active.work = this.#formatTime(works);
+        this.#active.relax = this.#formatTime(breaks + relaxes);
+        this.#active.total = this.#formatTime(works + breaks + relaxes);
+
         return this.#active;
     }
     set active(todo){
-        this.#active = todo;
+        this.#active = Object.assign({}, todo);
     }
 
     get list(){
         return this.#list;
     }
-    set list(todo){
-        this.#list = todo;
+    set list(list){
+        this.#list = list;
     }
 
 
@@ -97,7 +114,10 @@ export default class Todo {
 
     increasePomodoro(){
         this.active.pomodoro++;
-        this.#update(this.active);
+        this.#update({
+            id:       this.active.id,
+            pomodoro: this.active.pomodoro,
+        });
         return this.active;
     }
 
@@ -106,4 +126,12 @@ export default class Todo {
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
+
+    #leadingZero = num => num < 10 ? `0${num}` : num;
+
+    #formatTime = min => {
+        const hour = Math.floor(min / 60);
+        min = this.#leadingZero(Math.floor(min % 60));
+        return hour ? `${hour} ч ${min} мин` : `${min} мин`;
+    };
 }

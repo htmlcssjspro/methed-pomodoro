@@ -14,6 +14,12 @@ export default class Pomodoro {
 
         this.todo = new Todo({
             storageName: options.storageName,
+            timer:       {
+                work:  options.work,
+                break: options.break,
+                relax: options.relax,
+                count: options.count,
+            },
         });
 
         this.dom = new DOM();
@@ -45,8 +51,7 @@ export default class Pomodoro {
         this.dom.renderHeaderTitle(this.name);
         this.dom.renderTodoList(this.todo.list);
         this.dom.renderTimer(this.timer.left);
-        this.dom.renderCount(this.todo.active?.pomodoro);
-        this.dom.renderFooterTitle(this.todo.active?.title);
+        this.dom.renderTodo(this.todo.active);
     }
 
     addTodo() {
@@ -54,7 +59,7 @@ export default class Pomodoro {
         if (!todo) return;
         this.timer.setStatus('work');
         this.timer.stop();
-        this.dom.renderTodo(todo);
+        this.dom.renderTodo(this.todo.active);
         this.dom.renderTodoList(this.todo.list);
     }
 
@@ -63,7 +68,7 @@ export default class Pomodoro {
         this.todo.active = todo;
         this.timer.setStatus('work');
         this.timer.stop();
-        this.dom.renderTodo(todo);
+        this.dom.renderTodo(this.todo.active);
     }
 
     editTodo({ detail }) {
@@ -73,7 +78,7 @@ export default class Pomodoro {
         this.todo.active = todo;
         this.timer.setStatus('work');
         this.timer.stop();
-        this.dom.renderTodo(todo);
+        this.dom.renderTodo(this.todo.active);
         this.dom.renderTodoList(this.todo.list);
     }
 

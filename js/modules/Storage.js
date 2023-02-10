@@ -20,24 +20,24 @@ export default class Storage {
         localStorage.removeItem(this.name);
     }
 
-    getItem(id) {
+    #getItem(id) {
         return this.list.find(item => item.id === id);
     }
 
-    addItem(item) {
+    #addItem(item) {
         this.list.push(item);
         this.setList(this.list);
         return item;
     }
 
-    updateItem(source) {
+    #updateItem(source) {
         const target = this.getItem(source.id);
         const updatedItem = Object.assign(target, source);
         this.setList(this.list);
         return updatedItem;
     }
 
-    removeItem(id) {
+    #removeItem(id) {
         this.list = this.list.filter(item => item.id !== id);
         this.setList(this.list);
     }

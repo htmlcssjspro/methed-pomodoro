@@ -10,6 +10,12 @@ export default class Timer {
         relax: new Audio('audio/relax.mp3'),
     };
 
+    #status = {
+        work:  'Работа',
+        break: 'Перерыв',
+        relax: 'Отдых',
+    };
+
     #left;
 
     audio = {};
@@ -60,7 +66,7 @@ export default class Timer {
     #reset(){
         this.left = this[this.status];
         this.dom.renderTimer(this.left);
-        this.dom.renderTitle(this.status, this.left);
+        this.dom.renderPageTitle(this.#status[this.status], this.left);
     }
 
     setStatus(status) {
@@ -68,6 +74,12 @@ export default class Timer {
         clearInterval(this.intervalId);
         this.#reset();
         this.control.changeActiveBtn(this.status);
+
+        if (this.isActive) {
+            this.#start();
+        } else {
+            this.dom.renderStart('Старт');
+        }
     }
 
     statusHandler({ type }) {
@@ -77,7 +89,7 @@ export default class Timer {
     changeStatus() {
         if (this.status === 'work') {
             this.todo.increasePomodoro();
-            this.dom.renderCount(this.todo.active.pomodoro);
+            this.dom.renderStats(this.todo.active);
             if (this.todo.active.pomodoro % this.count) {
                 this.setStatus('break');
             } else {
@@ -85,9 +97,6 @@ export default class Timer {
             }
         } else {
             this.setStatus('work');
-        }
-        if (this.isActive) {
-            this.#start();
         }
     }
 
@@ -98,7 +107,7 @@ export default class Timer {
             this.#decrease();
             this.#timeSync(countdown);
             this.dom.renderTimer(this.left);
-            this.dom.renderTitle(this.status, this.left);
+            this.dom.renderPageTitle(this.#status[this.status], this.left);
 
             if (this.left > 0) return;
 
@@ -132,4 +141,5 @@ export default class Timer {
     #alarm() {
         this.audio[this.status].play();
     }
+
 }

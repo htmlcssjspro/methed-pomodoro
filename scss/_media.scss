@@ -1,0 +1,59 @@
+// bootstrap examples
+$breakpoint-xl: 1200px;
+$breakpoint-lg: 992px;
+$breakpoint-md: 768px;
+$breakpoint-sm: 576px;
+$breakpoint-xs: 0;
+
+//* Viewport
+$max-width-xl: 1140px;
+$max-width-lg: 960px;
+$max-width-md: 720px;
+$max-width-sm: 540px;
+
+$laptop: 1200px;
+$tablet-landscape: 1024px;
+$tablet-portrait: 768px;
+$mobile: 576px;
+
+@mixin max($width) {
+    @media screen and (max-width: $width) {
+        @content;
+    }
+}
+
+@mixin min($width) {
+    @media screen and (min-width: ($width + 0.02px)) {
+        @content;
+    }
+}
+
+@mixin min-max($width-min, $width-max) {
+    @media screen and (min-width: ($width-min + 0.02px)) and (max-width: $width-max) {
+        @content;
+    }
+}
+
+@mixin laptop {
+    @include max($laptop) {
+        @content;
+    }
+}
+
+@mixin tablet-l {
+    @include max($tablet-landscape) {
+        @content;
+    }
+}
+
+@mixin tablet-p {
+    @include max($tablet-portrait) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @include max($mobile) {
+        @content;
+    }
+}
